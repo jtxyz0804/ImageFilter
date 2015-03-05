@@ -177,5 +177,48 @@ public class PixelBuffer {
 
         mBitmap = Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888);
         mBitmap.copyPixelsFromBuffer(ibt);
-    } 
+    }
+    
+    public Bitmap getBitmap(Bitmap inBitmap, IntBuffer buffer) {
+		// Do we have a renderer?
+		if (mRenderer == null) {
+			Log.e(TAG, "getBitmap: Renderer was not set.");
+			return null;
+		}
+
+		// Does this thread own the OpenGL context?
+		if (!Thread.currentThread().getName().equals(mThreadOwner)) {
+			Log.e(TAG, "getBitmap: This thread does not own the OpenGL context.");
+			return null;
+		}
+
+		// Call the renderer draw routine
+		mRenderer.onDrawFrame(mGL);
+
+		// copy pixels from OpenGL
+		if (buffer == null || buffer.capacity() != mWidth * mHeight) {
+			buffer = IntBuffer.allocate(mWidth * mHeight);
+		}
+
+		mGL.glReadPixels(0, 0, mWidth, mHeight, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+
+		// vertical mirror image
+		int[] swapArray = new int[mWidth];
+		int[] array = buffer.array();
+		for (int i = 0; i < mHeight / 2; i++) {
+			System.arraycopy(array, i * mWidth, swapArray, 0, mWidth);
+			System.arraycopy(array, (mHeight - i - 1) * mWidth, array, i * mWidth, mWidth);
+			System.arraycopy(swapArray, 0, array, (mHeight - i - 1) * mWidth, mWidth);
+		}
+
+		// copy to Bitmap
+		if (inBitmap == null || !inBitmap.isMutable() || inBitmap.getWidth() != mWidth || inBitmap.getHeight() != mHeight) {
+			inBitmap = Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888);
+		}
+
+		inBitmap.copyPixelsFromBuffer(buffer);
+
+		return inBitmap;
+	}
+
 }

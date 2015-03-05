@@ -113,7 +113,7 @@ public class ImageBlurGLSurfaceView extends GLSurfaceView implements
         }
         if (currentEffect != 0) {
             //if an effect is chosen initialize it and apply it to the texture
-        	effect = galleryImageAdapter.createEffect(currentEffect, effectContext);
+        	effect = ImageBlurUtils.createEffect(currentEffect, effectContext);
             applyEffect();
         }
         renderResult();

@@ -48,7 +48,7 @@ public class MainActivity extends Activity {
 	
 	public void setImageBlurSource(){
 		imageBlurGLSurfaceView.setVisibility(View.VISIBLE);
-		galleryImageAdapter = new GalleryImageAdapter(MainActivity.this, bitmap, null);
+		galleryImageAdapter = new GalleryImageAdapter(MainActivity.this, bitmap);
 		galleryImageAdapter.setBlurPreviewImage(bitmapPreview);
 		Gallery gallery = (Gallery)findViewById(R.id.image_blur_preview);
 		gallery.setSelection(5);
@@ -94,13 +94,14 @@ public class MainActivity extends Activity {
 
 		@Override
 		protected Void doInBackground(Bitmap... param) {
+			//后台数据一步处理完成，修改为在adpter中异步处理每一张图片？？？
 			Bitmap bitmap = param[0];
 			bitmapPreview.add(bitmap);
 			for (int i = 1; i < ImageBlurUtils.getEffectName().size(); i++) {
 				pixelBuffer = new PixelBuffer(bitmap.getWidth(), bitmap.getHeight());
 				pixelBuffer.setRenderer(imageBlurRender);	
 				imageBlurRender.mCurrentEffect = i;
-				bitmapPreview.add(pixelBuffer.getBitmap());
+				bitmapPreview.add(pixelBuffer.getBitmap(null, null));
 			}
 			
 			Log.i("jiangtao4", "bitmapPreview size is : " + bitmapPreview.size());
