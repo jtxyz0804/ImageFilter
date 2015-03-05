@@ -14,7 +14,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginBottom="5dp"
-        android:src="@drawable/ic_launcher"
+        android:src="@drawable/nine_patch_icn"
         android:scaleType="fitXY"
         app:riv_corner_radius="10dp"
         app:riv_border_color="@android:color/transparent"

@@ -37,17 +37,18 @@ public class MainActivity extends Activity {
 		bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.wallpaper_select_beauty);
 		imageBlurGLSurfaceView.setImageSource(bitmap);
 		
-		progressDialog = new ProgressDialog(MainActivity.this, R.style.progress_dialog_stule);
-		progressDialog.setMessage("Loading...");
-		
-		progressDialog.show();
-		
-		new BlurImageTask().execute(bitmap);
+//		progressDialog = new ProgressDialog(MainActivity.this, R.style.progress_dialog_stule);
+//		progressDialog.setMessage("Loading...");
+//		
+//		progressDialog.show();		
+//		new BlurImageTask().execute(bitmap);
+		//move image blur to ImageAdapter
+		setImageBlurSource();
 		
 	}
 	
 	public void setImageBlurSource(){
-		imageBlurGLSurfaceView.setVisibility(View.VISIBLE);
+		//imageBlurGLSurfaceView.setVisibility(View.VISIBLE);
 		galleryImageAdapter = new GalleryImageAdapter(MainActivity.this, bitmap);
 		galleryImageAdapter.setBlurPreviewImage(bitmapPreview);
 		Gallery gallery = (Gallery)findViewById(R.id.image_blur_preview);

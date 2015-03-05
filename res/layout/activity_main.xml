@@ -7,7 +7,6 @@
     <com.example.imageblur.ImageBlurGLSurfaceView
         android:id="@+id/image_blur"
         android:layout_height="0dp"
-        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_weight="1"/>
     
